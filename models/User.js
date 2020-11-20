@@ -1,15 +1,15 @@
 const path = require("path");
 
 const model = require("../lib/model");
-const {fromJSONFile} = require("../lib/utils");
+const Database = require("../lib/database");
 
 const PATH = path.join(process.cwd(), "db/users.json");
 
+const db = new Database(PATH);
+
 class User extends model.Model {
-  static __results = () => {
-    // console.log(this);
-    return fromJSONFile(PATH)();
-  };
+
+  static engine = db;
 
   static columns = {
     id: model.pk("id", "id"),

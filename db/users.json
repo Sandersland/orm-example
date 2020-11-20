@@ -1,5 +1,17 @@
-
 [
-    {"id": 1, "name": "Steffen Andersland", "active": true},
-    {"id": 2, "name": "Other Human", "active": false}
+  {
+    "id": 1,
+    "name": "Steffen Andersland",
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Christine Vogel",
+    "active": true
+  },
+  {
+    "id": 3,
+    "name": "Ms Missy Vogel",
+    "active": true
+  }
 ]
