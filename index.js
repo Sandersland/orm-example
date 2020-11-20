@@ -11,20 +11,19 @@ app.use(bodyParser.json());
 
 app.get("/users", (req, res) => {
   const users = User.all();
-  res.json(users);
+  return res.json(users);
 });
 
 app.get("/users/:id", (req, res) => {
   const {id} = req.params;
-
   const user = User.all().find((u) => u.id == id);
-  res.json(user);
+  return res.json(user);
 });
 
 app.post("/users", (req, res) => {
   const user = User.create(req.body);
   user.save()
-  res.json(user);
+  return res.json(user);
 });
 
 app.patch("/users/:id", (req, res) => {
@@ -34,21 +33,23 @@ app.patch("/users/:id", (req, res) => {
   Object.assign(user, req.body);
   user.save();
   
-  res.json(user);
+  return res.json(user);
 });
 
 app.delete("/users/:id", (req, res) => {
   const {id} = req.params;
 
   const user = User.all().find(u => u.id == id);
-
-  user.delete();
-  res.json(user);
+  if (user) {
+    user.delete();
+    return res.json(user);
+  }
+    return res.status(404).json({});
 });
 
 app.get("/posts", (req, res) => {
   const posts = Post.all();
-  res.json(posts);
+  return res.json(posts);
 });
 
 app.listen(PORT, () => {
