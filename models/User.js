@@ -9,6 +9,8 @@ const db = new Database(PATH);
 
 class User extends model.Model {
 
+  static tablename = "users";
+
   static engine = db;
 
   static columns = {
