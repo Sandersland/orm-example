@@ -8,10 +8,5 @@
     "id": 2,
     "name": "Christine Vogel",
     "active": true
-  },
-  {
-    "id": 3,
-    "name": "Missy Vogel",
-    "active": false
   }
 ]

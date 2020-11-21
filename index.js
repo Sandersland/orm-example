@@ -9,46 +9,52 @@ const PORT = 8080;
 const app = express();
 app.use(bodyParser.json());
 
-app.get("/users", (req, res) => {
-  const users = User.all();
-  return res.json(users);
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.all();
+    return res.json(users);
+  } catch (err) {
+    console.error(err);
+    return res.json(err)
+  }
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", async (req, res) => {
   const {id} = req.params;
-  const user = User.all().find((u) => u.id == id);
+  const users = await User.all();
+  const user = users.find((u) => u.id == id);
   return res.json(user);
 });
 
-app.post("/users", (req, res) => {
-  const user = User.create(req.body);
-  user.save()
+app.post("/users", async (req, res) => {
+  const user = await User.create(req.body);
+  await user.save();
   return res.json(user);
 });
 
-app.patch("/users/:id", (req, res) => {
+app.patch("/users/:id", async (req, res) => {
   const {id} = req.params;
 
-  let user = User.all().find(u => u.id == id);
+  const users = await User.all();
+  let user = users.find(u => u.id == id);
   Object.assign(user, req.body);
-  user.save();
-  
+  await user.save();
   return res.json(user);
 });
 
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", async (req, res) => {
   const {id} = req.params;
-
-  const user = User.all().find(u => u.id == id);
+  const users = await User.all();
+  const user = users.find(u => u.id == id);
   if (user) {
-    user.delete();
+    await user.delete();
     return res.json(user);
   }
     return res.status(404).json({});
 });
 
-app.get("/posts", (req, res) => {
-  const posts = Post.all();
+app.get("/posts", async(req, res) => {
+  const posts = await Post.all();
   return res.json(posts);
 });
 
