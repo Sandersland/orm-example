@@ -1,11 +1,5 @@
-const path = require("path");
-
 const model = require("../lib/model");
-const Database = require("../lib/database");
-
-const PATH = path.join(process.cwd(), "db/users.json");
-
-const db = new Database(PATH);
+const db = require("../db/engine");
 
 class User extends model.Model {
 

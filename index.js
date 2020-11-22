@@ -19,7 +19,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.get("/users/:id", async (req, res) => {
+app.get("^/users/:id([0-9]+)", async (req, res) => {
   const {id} = req.params;
   const users = await User.all();
   const user = users.find((u) => u.id == id);
