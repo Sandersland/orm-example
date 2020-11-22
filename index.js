@@ -58,6 +58,19 @@ app.get("/posts", async(req, res) => {
   return res.json(posts);
 });
 
+app.get("^/posts/:id([0-9]+)", async(req, res) => {
+  const {id} = req.params;
+  const posts = await Post.all();
+  const post = posts.find((p) => p.id == id);
+  return res.json(post);
+})
+
+app.post("/posts", async(req, res) => {
+  const post = await Post.create(req.body);
+  await post.save();
+  return res.json(post);
+});
+
 app.listen(PORT, () => {
   console.log("listening on port", PORT);
 });

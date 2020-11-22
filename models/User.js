@@ -1,5 +1,6 @@
 const model = require("../lib/model");
-const db = require("../db/engine");
+// const db = require("../db/engine");
+const db = require("../db/sqlite");
 
 class User extends model.Model {
 

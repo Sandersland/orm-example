@@ -1,4 +1,4 @@
-const Database = require("../lib/database");
+const Database = require("../lib/json-db");
 
 const db = Database.init(__dirname);
 
