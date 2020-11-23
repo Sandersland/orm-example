@@ -8,7 +8,7 @@ class Post extends model.Model {
 
   static columns = {
     id: model.pk("id", "id"),
-    subject: model.column("subject", "subject"),
+    subject: model.textField("subject", "subject"),
     userId: model.fk("userId", "userId", User)
   }
 }

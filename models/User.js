@@ -10,9 +10,11 @@ class User extends model.Model {
 
   static columns = {
     id: model.pk("id", "id"),
-    name: model.column("name", "name"),
-    active: model.column("active", "active")
+    name: model.textField("name", "name"),
+    active: model.booleanField("active", "active")
   }
 }
+
+db.createTable(User);
 
 module.exports = User;
