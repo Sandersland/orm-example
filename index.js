@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 
 const User = require("./models/User.js");
 const Post = require("./models/Post.js");
+const {PostSerializer} = require("./serializers/PostSerializer");
 
 const PORT = 8080;
 
@@ -37,9 +38,12 @@ app.patch("/users/:id", async (req, res) => {
 
   const users = await User.all();
   let user = users.find(u => u.id == id);
-  Object.assign(user, req.body);
-  await user.save();
-  return res.json(user);
+  if (user) {
+    Object.assign(user, req.body);
+    await user.save();
+    return res.json(user);
+  }
+  
 });
 
 app.delete("/users/:id", async (req, res) => {
@@ -62,6 +66,8 @@ app.get("^/posts/:id([0-9]+)", async(req, res) => {
   const {id} = req.params;
   const posts = await Post.all();
   const post = posts.find((p) => p.id == id);
+  // const serializer = new PostSerializer(post);
+  // const response = await serializer.dump();
   return res.json(post);
 })
 
@@ -69,6 +75,19 @@ app.post("/posts", async(req, res) => {
   const post = await Post.create(req.body);
   await post.save();
   return res.json(post);
+});
+
+app.patch("^/posts/:id([0-9]+)", async (req, res) => {
+  const {id} = req.params;
+  const posts = await Post.all();
+  let post = posts.find((p) => p.id == id);
+  if (post) {
+    Object.assign(post, req.body);
+    await post.save();
+    return res.json(post);
+  }
+  return res.json({})
+  
 });
 
 app.listen(PORT, () => {
