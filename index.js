@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 
 const User = require("./models/User.js");
 const Post = require("./models/Post.js");
-const {PostSerializer} = require("./serializers/PostSerializer");
 
 const PORT = 8080;
 
@@ -22,9 +21,11 @@ app.get("/users", async (req, res) => {
 
 app.get("^/users/:id([0-9]+)", async (req, res) => {
   const {id} = req.params;
-  const users = await User.all();
-  const user = users.find((u) => u.id == id);
-  return res.json(user);
+  const user = await User.query.get(id);
+  if (user) {
+    return res.json(user);
+  }
+  return res.status(404).json({});
 });
 
 app.post("/users", async (req, res) => {
@@ -33,41 +34,35 @@ app.post("/users", async (req, res) => {
   return res.json(user);
 });
 
-app.patch("/users/:id", async (req, res) => {
+app.patch("/users/:id([0-9]+)", async (req, res) => {
   const {id} = req.params;
-
-  const users = await User.all();
-  let user = users.find(u => u.id == id);
+  let user = await User.query.get(id);
   if (user) {
     Object.assign(user, req.body);
-    await user.save();
+    user = await user.save();
     return res.json(user);
   }
-  
+  return res.status(404).json({});
 });
 
-app.delete("/users/:id", async (req, res) => {
+app.delete("/users/:id([0-9]+)", async (req, res) => {
   const {id} = req.params;
-  const users = await User.all();
-  const user = users.find(u => u.id == id);
+  const user = await User.query.get(id);
   if (user) {
     await user.delete();
     return res.json(user);
   }
-    return res.status(404).json({});
+  return res.status(404).json({});
 });
 
 app.get("/posts", async(req, res) => {
-  const posts = await Post.all();
+  const posts = await Post.query.all();
   return res.json(posts);
 });
 
 app.get("^/posts/:id([0-9]+)", async(req, res) => {
   const {id} = req.params;
-  const posts = await Post.all();
-  const post = posts.find((p) => p.id == id);
-  // const serializer = new PostSerializer(post);
-  // const response = await serializer.dump();
+  const post = await Post.query.get(id);
   return res.json(post);
 })
 
@@ -79,16 +74,24 @@ app.post("/posts", async(req, res) => {
 
 app.patch("^/posts/:id([0-9]+)", async (req, res) => {
   const {id} = req.params;
-  const posts = await Post.all();
-  let post = posts.find((p) => p.id == id);
+  let post = await Post.query.get(id);
   if (post) {
     Object.assign(post, req.body);
-    await post.save();
+    post = await post.save();
     return res.json(post);
   }
-  return res.json({})
-  
+  return res.status(404).json({});
 });
+
+app.delete("^/posts/:id([0-9]+)", async (req, res) => {
+  const {id} = req.params;
+  const post = await Post.query.get(id);
+  if (post) {
+    await post.delete();
+    return res.json(post);
+  }
+  return res.status(404).json({});
+})
 
 app.listen(PORT, () => {
   console.log("listening on port", PORT);
