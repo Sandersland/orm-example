@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const User = require("./models/User.js");
 const Post = require("./models/Post.js");
 
+const PostSerializer = require("./serializers/PostSerializer");
+
 const PORT = 8080;
 
 const app = express();
@@ -63,7 +65,9 @@ app.get("/posts", async(req, res) => {
 app.get("^/posts/:id([0-9]+)", async(req, res) => {
   const {id} = req.params;
   const post = await Post.query.get(id);
-  return res.json(post);
+  const postSerializer = new PostSerializer();
+  const response = postSerializer.dump(post);
+  return res.json(response);
 })
 
 app.post("/posts", async(req, res) => {
