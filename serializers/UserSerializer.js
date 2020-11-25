@@ -14,8 +14,6 @@ class UserSerializer extends Serializer {
     "name"
   ];
 
-  static readonly = ["id"];
-
 }
 
 module.exports = UserSerializer;

@@ -1,5 +1,6 @@
 const model = require("../lib/model");
-const db = require("../db/engine");
+const db = require("../db/sqlite");
+// const db = require("../db/engine");
 
 const User = require("./User");
 
@@ -12,5 +13,7 @@ class Post extends model.Model {
     user: model.fk("userId", "userId", User)
   }
 }
+
+db.createTable(Post);
 
 module.exports = Post;

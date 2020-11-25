@@ -15,8 +15,6 @@ class PostSerializer extends Serializer {
     autojoin("userId")
   ];
 
-  static readonly = ["id"];
-
 }
 
 module.exports = PostSerializer;
